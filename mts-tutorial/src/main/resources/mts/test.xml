@@ -35,6 +35,7 @@
     <testcase name="003_INVITE_180_Ringing_received" state="false" number="1" description="" >
         <scenario file="003_INVITE_180_Ringing_received/UserAgentClient.xml" name="mami" routingName="mami"/>
     </testcase>
-
-
+    <testcase name="004_INVITE_200_OK_received" state="false" number="1" description="" >
+        <scenario file="004_INVITE_200_OK_received/UserAgentClient.xml" name="mami" routingName="mami"/>
+    </testcase>
 </test>
