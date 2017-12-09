@@ -26,8 +26,11 @@
     <parameter name="[retransmitTimers(10)]" operation="set" value="4000"/>
 
     <!-- Test Case-s -->
-    <testcase name="001_INVITE_100_Trying" state="false" number="1" description="" >
-        <scenario file="001_INVITE_100_Trying/UserAgentClient.xml" name="mami" routingName="mami"/>
+    <testcase name="001_INVITE_100_Trying_received" state="false" number="1" description="" >
+        <scenario file="001_INVITE_100_Trying_received/UserAgentClient.xml" name="mami" routingName="mami"/>
+    </testcase>
+    <testcase name="002_INVITE_100_Trying_has_no_To_tag" state="false" number="1" description="" >
+        <scenario file="002_INVITE_100_Trying_has_no_To_tag/UserAgentClient.xml" name="mami" routingName="mami"/>
     </testcase>
 
 </test>

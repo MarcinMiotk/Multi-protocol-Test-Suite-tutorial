@@ -6,7 +6,7 @@
                       ../../schemas/scenario_final.xsd">
 -->
 <scenario>
-    <parameter name="[test-name]" value="001_INVITE_100_Trying" />
+    <parameter name="[test-name]" value="001_INVITE_100_Trying_received" />
     <parameter name="[localPortSIP]" operation="number.add" value="1" value2="[localPortSIP]"/>
     <parameter name="[listenpointName]" value="[test-name]" />
     <parameter name="[callId-fixed]" operation="set" value="[test-name]" />
