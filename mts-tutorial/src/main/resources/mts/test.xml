@@ -41,4 +41,8 @@
     <testcase name="005_INVITE_200_OK_has_Contact" state="false" number="1" description="" >
         <scenario file="005_INVITE_200_OK_has_Contact/UserAgentClient.xml" name="mami" routingName="mami"/>
     </testcase>
+    <testcase name="006_INVITE_200_OK_has_SDP" state="false" number="1" description="" >
+        <scenario file="006_INVITE_200_OK_has_SDP/UserAgentClient.xml" name="mami" routingName="mami"/>
+    </testcase>
+
 </test>

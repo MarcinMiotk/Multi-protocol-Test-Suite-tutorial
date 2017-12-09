@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<scenario xmlns="http://mts-ericsson.snmill.com/scenario"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://mts-ericsson.snmill.com/scenario
+                      ../../schemas/scenario_final.xsd">
+-->
+<scenario>
+    <parameter name="[test-name]" value="006_INVITE_200_OK_has_SDP" />
+    <parameter name="[localPortSIP-adding]" operation="number.uid" />
+    <parameter name="[localPortSIP]" operation="number.add" value="[localPortSIP-adding]" value2="[localPortSIP]"/>
+    <parameter name="[listenpointName]" value="[test-name]" />
+    <parameter name="[callId-fixed]" operation="set" value="[test-name]" />
+    <parameter name="[callId-random]" operation="number.uid" />
+    <parameter name="[branchId]" operation="number.uid" />
+
+    <createListenpointSIP name="[listenpointName]" localHost="[localHostSIP]" localPort="[localPortSIP]" />
+    <sendMessageSIP name="Send INVITE" listenpoint="[listenpointName]" remoteHost="[remoteHostSIP]" remotePort="[remotePortSIP]">
+<![CDATA[INVITE sip:humpback@[remoteHostSIP]:[remotePortSIP] SIP/2.0
+Via: SIP/2.0/UDP [localHostSIP]:[localPortSIP];branch=z9hG4bK.-[branchId];rport
+From: "marcin" <sip:marcin@[localHostSIP]:[localPortSIP]>;tag=kRQ49vKpO
+To: sip:humpback@[remoteHostSIP]:[remotePortSIP]
+CSeq: 1 INVITE
+Call-ID: [callId-fixed]-[callId-random]
+Max-Forwards: 70
+Supported: replaces, outbound
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, NOTIFY, MESSAGE, SUBSCRIBE, INFO, UPDATE
+Content-Type: application/sdp
+Content-Length: 292
+Contact: "marcin" <sip:marcin@[localHostSIP]:[localPortSIP];transport=udp>;+sip.instance="<urn:uuid:ceecc76b-c6d7-4c35-8411-f0867e365ff9>"
+User-Agent: Linphone/3.11.1 (belle-sip/1.6.1)
+
+v=0
+o=marcin 3679 1124 IN IP4 [localHostSIP]
+s=Talk
+c=IN IP4 [localHostSIP]
+t=0 0
+a=rtcp-xr:rcvr-rtt=all:10000 stat-summary=loss,dup,jitt,TTL voip-metrics
+m=audio 7078 RTP/AVP 0 8 9 18 101
+a=fmtp:18 annexb=no
+a=rtpmap:101 telephone-event/8000
+a=rtcp-fb:* trr-int 5
+a=rtcp-fb:* ccm tmmbr
+]]>
+    </sendMessageSIP>
+
+    <receiveMessageSIP name="Waiting for 200 OK" request="false" type="INVITE" result="200" timeout="5" failedOnTimeout="true">
+        <parameter name="[Sdp-Connection-Address]" operation="protocol.setFromMessage" value="content(0).sdp.Connection.Address"/>
+        <parameter name="[Sdp-Media-Port]" operation="protocol.setFromMessage" value="content(0).sdp.media.Port"/>
+    </receiveMessageSIP>
+
+    <log level="0">200 OK has SDP with Connection Address [Sdp-Connection-Address]</log>
+    <log level="0">200 OK has SDP with Media Port [Sdp-Media-Port]</log>
+
+    <parameter name="[Sdp-Connection-Address-length]" operation="string.length" value="[Sdp-Connection-Address]"/>
+    <test parameter="[Sdp-Connection-Address-length]" condition="greaterThan" value="7"/>
+    <test parameter="[Sdp-Connection-Address]" condition="string.contains" value="[remoteHostSIP]"/>
+    <test parameter="[Sdp-Media-Port]" condition="number.greaterEqualThan" value="20000"/>
+
+    <finally>
+        <removeListenpointSIP name="[listenpointName]" />
+    </finally>
+</scenario>
