@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<test name="SIP Basic Suite">
+    <!-- General -->
+
+    <!-- UAC - User Agent Client -->
+    <parameter name="[localHostSIP]" operation="file.readProperty" value="localhost.properties" value2="local.user.agent.client.ip"/>
+    <parameter name="[localPortSIP]" operation="file.readProperty" value="localhost.properties" value2="local.user.agent.client.port"/>
+
+    <!-- UAS - User Agent Server -->
+    <parameter name="[remoteHostSIP]" operation="file.readProperty" value="server.properties" value2="destination.user.agent.server.ip"/>
+    <parameter name="[remotePortSIP]" operation="file.readProperty" value="server.properties" value2="destination.user.agent.server.port"/>
+
+    <!-- timers for the retransmissions-->
+    <parameter name="[retransmitNumber]" operation="set" value="4"/>
+    <parameter name="[RetransTimeout]" operation="set" value="0.5"/>
+    <parameter name="[retransmitTimers(0)]" operation="set" value="500"/>
+    <parameter name="[retransmitTimers(1)]" operation="set" value="1000"/>
+    <parameter name="[retransmitTimers(2)]" operation="set" value="2000"/>
+    <parameter name="[retransmitTimers(3)]" operation="set" value="4000"/>
+    <parameter name="[retransmitTimers(4)]" operation="set" value="4000"/>
+    <parameter name="[retransmitTimers(5)]" operation="set" value="4000"/>
+    <parameter name="[retransmitTimers(6)]" operation="set" value="4000"/>
+    <parameter name="[retransmitTimers(7)]" operation="set" value="4000"/>
+    <parameter name="[retransmitTimers(8)]" operation="set" value="4000"/>
+    <parameter name="[retransmitTimers(9)]" operation="set" value="4000"/>
+    <parameter name="[retransmitTimers(10)]" operation="set" value="4000"/>
+
+    <!-- Test Case-s -->
+    <testcase name="001_INVITE_100_Trying" state="false" number="1" description="" >
+        <scenario file="001_INVITE_100_Trying/UserAgentClient.xml" name="mami" routingName="mami"/>
+    </testcase>
+
+</test>
