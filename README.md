@@ -1,6 +1,11 @@
 # Multi-protocol-Test-Suite-tutorial
 Multi-protocol-Test-Suite tutorial
 
+YouTube - https://www.youtube.com/watch?v=swA4LNIT_hU
+
+[![Multi protocol Test Suite tutorial – Testowanie systemów Voice Over IP - Omówienie narzędzia](http://img.youtube.com/vi/swA4LNIT_hU/0.jpg)](https://www.youtube.com/watch?v=swA4LNIT_hU)
+
+
 Narzędzie Multi-protocol Test Suite, w skrócie MTS, służy do tworzenia testów funkcjonalnych, end2end, wydajnościowych, czy też testów regresyjnych. Wykorzystać je można do testowania systemów telekomunikacyjnych oraz systemów Voice Over IP. 
 
 Narzędzie ma moduły wspierające komunikację z testowanymi systemami z użyciem protokołów: SIP, RTP, SDP, SIGTRAN, SS7, DIAMETER, http, RADIUS, SMTP, IMAP, POP, SMPP, UCP, STUN. Aplikacja wspiera także budowanie scenariuszy testowych z użyciem protokołów UDP oraz TCP. 
