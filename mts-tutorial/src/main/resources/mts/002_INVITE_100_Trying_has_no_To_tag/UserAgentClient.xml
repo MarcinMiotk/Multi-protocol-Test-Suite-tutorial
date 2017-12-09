@@ -7,7 +7,8 @@
 -->
 <scenario>
     <parameter name="[test-name]" value="002_INVITE_100_Trying_has_no_To_tag" />
-    <parameter name="[localPortSIP]" operation="number.add" value="2" value2="[localPortSIP]"/>
+    <parameter name="[localPortSIP-adding]" operation="number.uid" />
+    <parameter name="[localPortSIP]" operation="number.add" value="[localPortSIP-adding]" value2="[localPortSIP]"/>
     <parameter name="[listenpointName]" value="[test-name]" />
     <parameter name="[callId-fixed]" operation="set" value="[test-name]" />
     <parameter name="[callId-random]" operation="number.uid" />

@@ -6,7 +6,7 @@
                       ../../schemas/scenario_final.xsd">
 -->
 <scenario>
-    <parameter name="[test-name]" value="001_INVITE_100_Trying_received" />
+    <parameter name="[test-name]" value="003_INVITE_180_Ringing_received" />
     <parameter name="[localPortSIP-adding]" operation="number.uid" />
     <parameter name="[localPortSIP]" operation="number.add" value="[localPortSIP-adding]" value2="[localPortSIP]"/>
     <parameter name="[listenpointName]" value="[test-name]" />
@@ -44,8 +44,12 @@ a=rtcp-fb:* ccm tmmbr
 ]]>
     </sendMessageSIP>
 
-    <receiveMessageSIP name="Waiting for 100 Trying" request="false" type="INVITE" result="100" timeout="2" failedOnTimeout="true">
+    <receiveMessageSIP name="Waiting for 180 Trying" request="false" type="INVITE" result="180" timeout="5" failedOnTimeout="true">
+        <parameter name="[To-tag]" operation="protocol.setFromMessage" value="header.To.parameter.tag"/>
     </receiveMessageSIP>
+    <parameter name="[To-tag-length]" operation="string.length" value="[To-tag]"/>
+    <test parameter="[To-tag-length]" condition="greaterThan" value="2"/>
+
     <finally>
         <removeListenpointSIP name="[listenpointName]" />
     </finally>
