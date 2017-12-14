@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<scenario xmlns="http://mts-ericsson.snmill.com/scenario"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://mts-ericsson.snmill.com/scenario
+          ../../schemas/scenario_final.xsd">
+-->
+<scenario>
+
+    <parameter name="[test-name]" value="006_INVITE_200_OK_has_SDP" />
+    <parameter name="[localPortSIP-adding]" operation="number.uid" />
+    <parameter name="[localPortSIP]" operation="number.add" value="[localPortSIP-adding]" value2="[localPortSIP]"/>
+    <parameter name="[listenpointName]" value="[test-name]" />
+    <parameter name="[callId-fixed]" operation="set" value="[test-name]" />
+    <parameter name="[callId-random]" operation="number.uid" />
+    <parameter name="[branchId]" operation="number.uid" />
+
+
+    <parameter name="[localPortRtp]" operation="set" value="9999" />
+
+    <createListenpointSIP name="[listenpointName]" localHost="[localHostSIP]" localPort="[localPortSIP]" />
+    <sendMessageSIP name="Send INVITE" listenpoint="[listenpointName]" remoteHost="[remoteHostSIP]" remotePort="[remotePortSIP]">
+<![CDATA[INVITE sip:humpback@[remoteHostSIP]:[remotePortSIP] SIP/2.0
+Via: SIP/2.0/UDP [localHostSIP]:[localPortSIP];branch=z9hG4bK.-[branchId];rport
+From: "marcin" <sip:marcin@[localHostSIP]:[localPortSIP]>;tag=kRQ49vKpO
+To: sip:humpback@[remoteHostSIP]:[remotePortSIP]
+CSeq: 1 INVITE
+Call-ID: [callId-fixed]-[callId-random]
+Max-Forwards: 70
+Supported: replaces, outbound
+Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, NOTIFY, MESSAGE, SUBSCRIBE, INFO, UPDATE
+Content-Type: application/sdp
+Content-Length: 292
+Contact: "marcin" <sip:marcin@[localHostSIP]:[localPortSIP];transport=udp>;+sip.instance="<urn:uuid:ceecc76b-c6d7-4c35-8411-f0867e365ff9>"
+User-Agent: Linphone/3.11.1 (belle-sip/1.6.1)
+
+v=0
+o=marcin 3679 1124 IN IP4 [localHostSIP]
+s=Talk
+c=IN IP4 [localHostSIP]
+t=0 0
+a=rtcp-xr:rcvr-rtt=all:10000 stat-summary=loss,dup,jitt,TTL voip-metrics
+m=audio [localPortRtp] RTP/AVP 0 8 9 18 101
+a=fmtp:18 annexb=no
+a=rtpmap:101 telephone-event/8000
+a=rtcp-fb:* trr-int 5
+a=rtcp-fb:* ccm tmmbr
+]]>
+    </sendMessageSIP>
+
+    <receiveMessageSIP name="Waiting for 200 OK" request="false" type="INVITE" result="200" timeout="5" failedOnTimeout="true">
+        <parameter name="[Sdp-Connection-Address]" operation="protocol.setFromMessage" value="content(0).sdp.Connection.Address"/>
+        <parameter name="[Sdp-Media-Port]" operation="protocol.setFromMessage" value="content(0).sdp.media.Port"/>
+
+        <parameter name="[To.Tag]" operation="protocol.setFromMessage" value="header.To.parameter.tag"/>
+        <parameter name="[Contact.URI]" operation="protocol.setFromMessage" value="header.Contact.Address.URI"/>
+        <parameter name="[Contact.Host]" operation="protocol.setFromMessage" value="header.Contact.Address.URI.Host"/>
+        <parameter name="[Contact.Port]" operation="protocol.setFromMessage" value="header.Contact.Address.URI.Port"/>
+    </receiveMessageSIP>
+
+    <log level="0">200 OK has SDP with Connection Address [Sdp-Connection-Address]</log>
+    <log level="0">200 OK has SDP with Media Port [Sdp-Media-Port]</log>
+
+    <parameter name="[branchId]" operation="number.uid" />
+    <sendMessageSIP listenpoint="[listenpointName]" remoteHost="[Contact.Host]" remotePort="[Contact.Port]">
+        <![CDATA[ACK sip:humpback@[remoteHostSIP]:[remotePortSIP];transport=udp SIP/2.0
+Via: SIP/2.0/UDP [localHostSIP]:[localPortSIP];branch=z9hG4bK.-[branchId];rport
+From: "marcin" <sip:marcin@[localHostSIP]:[localPortSIP]>;tag=kRQ49vKpO
+To: <sip:humpback@[remoteHostSIP]:[remotePortSIP]>;tag=[To.Tag]
+CSeq: 1 ACK
+Call-ID: [callId-fixed]-[callId-random]
+Max-Forwards: 70
+User-Agent: Linphone/3.11.1 (belle-sip/1.6.1)
+]]>
+    </sendMessageSIP>
+
+
+
+
+    <!-- [begin] MEDIA -->
+
+    <createListenpointRTP
+            name="rtp"
+            localHost="[localHostSIP]"
+            localPort="[localPortRtp]"
+            listenUDP="true" transport="UDP"/>
+    <log level="0">Listening RTP : [localHostSIP] : [localPortRtp]</log>
+    <receiveMessageRTP
+            listenpoint="rtp"
+            failedOnTimeout="true"
+            type="0"
+            timeout="5">
+        <parameter name="[ssrc]" operation="protocol.setFromMessage" value="header.ssrc"/>
+        <parameter name="[payloadType]" operation="protocol.setFromMessage" value="header.payloadType"/>
+        <parameter name="[received]" operation="set" value="true"/>
+    </receiveMessageRTP>
+    <log level="0">Got RTP: [ssrc] [payloadType] received [received]</log>
+
+    <!-- [end] MEDIA -->
+
+
+
+
+    <receiveMessageSIP request="true" type="BYE" timeout="30" failedOnTimeout="true">
+    </receiveMessageSIP>
+    <parameter name="[whenBYE]" operation="protocol.setFromMessage" value="message.timestamp"/>
+
+    <!-- [begin] Send 200 OK -->
+    <parameter name="[requestMessage]" operation="protocol.setFromMessage" value="message"/>
+    <parameter name="[Via]" operation="protocol.setFromMessage" value="header.Via" value2="[requestMessage]"/>
+    <parameter name="[To]" operation="protocol.setFromMessage" value="header.To" value2="[requestMessage]"/>
+    <parameter name="[From]" operation="protocol.setFromMessage" value="header.From" value2="[requestMessage]"/>
+    <parameter name="[CSeq]" operation="protocol.setFromMessage" value="header.CSeq" value2="[requestMessage]"/>
+    <parameter name="[Call-ID]" operation="protocol.setFromMessage" value="header.Call-ID" value2="[requestMessage]"/>
+    <log level="0">Read VIA: [Via]</log>
+    <sendMessageSIP listenpoint="[listenpointName]" remoteHost="[Contact.Host]" remotePort="[Contact.Port]">
+        <![CDATA[SIP/2.0 200 OK
+Via: [Via]
+To: [To]
+From: [From]
+Call-ID: [Call-ID]
+CSeq: [CSeq]
+User-Agent: X-Lite release 5.0.3 stamp 88254
+Content-Length: 0
+]]>
+    </sendMessageSIP>
+    <!-- [end] Send 200 OK -->
+
+
+    <finally>
+        <removeListenpointRTP name="rtp" />
+        <removeListenpointSIP name="[listenpointName]" />
+    </finally>
+</scenario>
