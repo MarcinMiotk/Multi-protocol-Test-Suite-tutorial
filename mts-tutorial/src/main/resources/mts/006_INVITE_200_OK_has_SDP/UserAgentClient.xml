@@ -26,7 +26,7 @@ Max-Forwards: 70
 Supported: replaces, outbound
 Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, NOTIFY, MESSAGE, SUBSCRIBE, INFO, UPDATE
 Content-Type: application/sdp
-Content-Length: 292
+Content-Length: x
 Contact: "marcin" <sip:marcin@[localHostSIP]:[localPortSIP];transport=udp>;+sip.instance="<urn:uuid:ceecc76b-c6d7-4c35-8411-f0867e365ff9>"
 User-Agent: Linphone/3.11.1 (belle-sip/1.6.1)
 

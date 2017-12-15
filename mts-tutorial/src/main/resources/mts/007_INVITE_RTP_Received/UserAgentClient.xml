@@ -5,7 +5,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://mts-ericsson.snmill.com/scenario
   ../../schemas/scenario_final.xsd">
     -->
-<scenario name="RTP">
+<scenario name="RTP_7">
 
     <parameter name="[test-name]" value="006_INVITE_200_OK_has_SDP" />
     <parameter name="[localPortSIP-adding]" operation="number.uid" />
@@ -20,7 +20,7 @@ xsi:schemaLocation="http://mts-ericsson.snmill.com/scenario
 
     <log level="0">localPortRtp: [localPortRtp]</log>
 
-    <createListenpointRTP name="rtp" localHost="[localHostSIP]" localPort="[localPortRtp]" listenUDP="true"/>
+    <createListenpointRTP name="RTP_7" localHost="[localHostSIP]" localPort="[localPortRtp]" listenUDP="true"/>
     <createListenpointSIP name="[listenpointName]" localHost="[localHostSIP]" localPort="[localPortSIP]" />
 
     <sendMessageSIP name="Send INVITE" listenpoint="[listenpointName]" remoteHost="[remoteHostSIP]" remotePort="[remotePortSIP]">
@@ -80,10 +80,10 @@ User-Agent: Linphone/3.11.1 (belle-sip/1.6.1)
 
 
     <receiveMessageRTP
-            listenpoint="rtp"
+            listenpoint="RTP_7"
             failedOnTimeout="true"
             type="PCMU:0"
-            name="RTP"
+            name="RTP_7"
             timeout="10">
         <parameter name="[ssrc]" operation="protocol.setFromMessage" value="header.ssrc"/>
         <parameter name="[payloadType]" operation="protocol.setFromMessage" value="header.payloadType"/>
@@ -124,7 +124,7 @@ Content-Length: 0
     <!-- [end] Send 200 OK -->
 
     <finally>
-        <removeListenpointRTP name="rtp" />
+        <removeListenpointRTP name="RTP_7" />
         <removeListenpointSIP name="[listenpointName]" />
     </finally>
 </scenario>

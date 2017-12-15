@@ -26,27 +26,26 @@
     <parameter name="[retransmitTimers(10)]" operation="set" value="4000"/>
 
     <!-- Test Case-s -->
-    <testcase name="001_INVITE_100_Trying_received" state="false" number="1" description="" >
-        <scenario file="001_INVITE_100_Trying_received/UserAgentClient.xml" name="mami" routingName="mami"/>
+    <testcase name="001_INVITE_100_Trying_received" state="false" number="1">
+        <scenario file="001_INVITE_100_Trying_received/UserAgentClient.xml" name="RTP_1" routingName="RTP_1"/>
     </testcase>
-    <testcase name="002_INVITE_100_Trying_has_no_To_tag" state="false" number="1" description="" >
-        <scenario file="002_INVITE_100_Trying_has_no_To_tag/UserAgentClient.xml" name="mami" routingName="mami"/>
+    <testcase name="002_INVITE_100_Trying_has_no_To_tag" state="false" number="1">
+        <scenario file="002_INVITE_100_Trying_has_no_To_tag/UserAgentClient.xml" name="RTP_2" routingName="RTP_2"/>
     </testcase>
-    <testcase name="003_INVITE_180_Ringing_received" state="false" number="1" description="" >
-        <scenario file="003_INVITE_180_Ringing_received/UserAgentClient.xml" name="mami" routingName="mami"/>
+    <testcase name="003_INVITE_180_Ringing_received" state="false" number="1">
+        <scenario file="003_INVITE_180_Ringing_received/UserAgentClient.xml" name="RTP_3" routingName="RTP_3"/>
     </testcase>
-    <testcase name="004_INVITE_200_OK_received" state="false" number="1" description="" >
-        <scenario file="004_INVITE_200_OK_received/UserAgentClient.xml" name="mami" routingName="mami"/>
+    <testcase name="004_INVITE_200_OK_received" state="false" number="1">
+        <scenario file="004_INVITE_200_OK_received/UserAgentClient.xml" name="RTP_4" routingName="RTP_4"/>
     </testcase>
-    <testcase name="005_INVITE_200_OK_has_Contact" state="false" number="1" description="" >
-        <scenario file="005_INVITE_200_OK_has_Contact/UserAgentClient.xml" name="mami" routingName="mami"/>
+    <testcase name="005_INVITE_200_OK_has_Contact" state="false" number="1">
+        <scenario file="005_INVITE_200_OK_has_Contact/UserAgentClient.xml" name="RTP_5" routingName="RTP_5"/>
     </testcase>
-    <testcase name="006_INVITE_200_OK_has_SDP" state="false" number="1" description="" >
-        <scenario file="006_INVITE_200_OK_has_SDP/UserAgentClient.xml" name="mami" routingName="mami"/>
+    <testcase name="006_INVITE_200_OK_has_SDP" state="false" number="1">
+        <scenario file="006_INVITE_200_OK_has_SDP/UserAgentClient.xml" name="RTP_6" routingName="RTP_6"/>
     </testcase>
-    <!-- 007 -->
-    <testcase name="007_INVITE_RTP_Received" state="false" number="1" description="" >
-        <scenario file="007_INVITE_RTP_Received/UserAgentClient.xml" name="mami" routingName="mami"/>
+    <testcase name="007_INVITE_RTP_Received" state="true" number="1">
+        <scenario file="007_INVITE_RTP_Received/UserAgentClient.xml" name="RTP_7" routingName="RTP_7"/>
     </testcase>
 
 </test>
