@@ -3,9 +3,9 @@
 <scenario xmlns="http://mts-ericsson.snmill.com/scenario"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://mts-ericsson.snmill.com/scenario
-          ../../schemas/scenario_final.xsd">
--->
-<scenario>
+  ../../schemas/scenario_final.xsd">
+    -->
+<scenario name="RTP">
 
     <parameter name="[test-name]" value="006_INVITE_200_OK_has_SDP" />
     <parameter name="[localPortSIP-adding]" operation="number.uid" />
@@ -13,12 +13,16 @@ xsi:schemaLocation="http://mts-ericsson.snmill.com/scenario
     <parameter name="[listenpointName]" value="[test-name]" />
     <parameter name="[callId-fixed]" operation="set" value="[test-name]" />
     <parameter name="[callId-random]" operation="number.uid" />
-    <parameter name="[branchId]" operation="number.uid" />
+    <parameter name="[branchId]" operation="number.uid"/>
 
+    <parameter name="[localPortRtp]" operation="file.readProperty" value="localhost.properties" value2="local.user.agent.client.rtp.min"/>
+    <parameter name="[localPortRtp]" operation="number.add" value="1" value2="[localPortRtp]" />
 
-    <parameter name="[localPortRtp]" operation="set" value="9999" />
+    <log level="0">localPortRtp: [localPortRtp]</log>
 
+    <createListenpointRTP name="rtp" localHost="[localHostSIP]" localPort="[localPortRtp]" listenUDP="true"/>
     <createListenpointSIP name="[listenpointName]" localHost="[localHostSIP]" localPort="[localPortSIP]" />
+
     <sendMessageSIP name="Send INVITE" listenpoint="[listenpointName]" remoteHost="[remoteHostSIP]" remotePort="[remotePortSIP]">
 <![CDATA[INVITE sip:humpback@[remoteHostSIP]:[remotePortSIP] SIP/2.0
 Via: SIP/2.0/UDP [localHostSIP]:[localPortSIP];branch=z9hG4bK.-[branchId];rport
@@ -30,7 +34,7 @@ Max-Forwards: 70
 Supported: replaces, outbound
 Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, NOTIFY, MESSAGE, SUBSCRIBE, INFO, UPDATE
 Content-Type: application/sdp
-Content-Length: 292
+Content-Length: x
 Contact: "marcin" <sip:marcin@[localHostSIP]:[localPortSIP];transport=udp>;+sip.instance="<urn:uuid:ceecc76b-c6d7-4c35-8411-f0867e365ff9>"
 User-Agent: Linphone/3.11.1 (belle-sip/1.6.1)
 
@@ -75,21 +79,12 @@ User-Agent: Linphone/3.11.1 (belle-sip/1.6.1)
     </sendMessageSIP>
 
 
-
-
-    <!-- [begin] MEDIA -->
-
-    <createListenpointRTP
-            name="rtp"
-            localHost="[localHostSIP]"
-            localPort="[localPortRtp]"
-            listenUDP="true" transport="UDP"/>
-    <log level="0">Listening RTP : [localHostSIP] : [localPortRtp]</log>
     <receiveMessageRTP
             listenpoint="rtp"
             failedOnTimeout="true"
-            type="0"
-            timeout="5">
+            type="PCMU:0"
+            name="RTP"
+            timeout="10">
         <parameter name="[ssrc]" operation="protocol.setFromMessage" value="header.ssrc"/>
         <parameter name="[payloadType]" operation="protocol.setFromMessage" value="header.payloadType"/>
         <parameter name="[received]" operation="set" value="true"/>
@@ -97,6 +92,8 @@ User-Agent: Linphone/3.11.1 (belle-sip/1.6.1)
     <log level="0">Got RTP: [ssrc] [payloadType] received [received]</log>
 
     <!-- [end] MEDIA -->
+
+
 
 
 
@@ -125,7 +122,6 @@ Content-Length: 0
 ]]>
     </sendMessageSIP>
     <!-- [end] Send 200 OK -->
-
 
     <finally>
         <removeListenpointRTP name="rtp" />
