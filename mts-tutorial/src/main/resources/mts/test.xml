@@ -47,5 +47,9 @@
     <testcase name="007_INVITE_RTP_Received" state="true" number="1">
         <scenario file="007_INVITE_RTP_Received/UserAgentClient.xml" name="RTP_7" routingName="RTP_7"/>
     </testcase>
+    <testcase name="008_INVITE_RTP_save_to_Wav" state="true" number="1">
+        <scenario file="008_INVITE_RTP_save_to_Wav/UserAgentClient.xml" name="RTP_8" routingName="RTP_8"/>
+    </testcase>
+
 
 </test>
